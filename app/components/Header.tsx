@@ -1,4 +1,4 @@
-//Header Components
+//Class Name: Header
 "use client";
 import { useState } from "react";
 import { Dialog } from "@headlessui/react";

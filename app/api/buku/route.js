@@ -16,32 +16,32 @@ export async function GET(request) {
 // Untuk kirim data buku yang dipinjam
 export async function POST(request) {
   try {
-    const { id, namabuku, nama_peminjam, tanggal_pinjam, tanggal_kembali } =
+    const { id_buku, namabuku, penulis, penerbit, pinjam } =
       await request.json();
-    const inputPinjam = await query({
+    const inputBuku = await query({
       query:
-        "INSERT INTO pinjam (id, namabuku, nama_peminjam, tanggal_pinjam, tanggal_kembali) VALUES (?, ?, ?, ?, ?)",
-      values: [id, namabuku, nama_peminjam, tanggal_pinjam, tanggal_kembali],
+        "INSERT INTO buku (id_buku, namabuku, penulis, penerbit, pinjam) VALUES (?, ?, ?, ?, ?)",
+      values: [id_buku, namabuku, penulis, penerbit, pinjam],
     });
-    const result = inputPinjam.affectedRows;
+    const result = inputBuku.affectedRows;
     let message = "";
     if (result) {
       message = "success";
     } else {
       message = "error";
     }
-    const pinjam = {
-      id: id,
+    const buku = {
+      id_buku: id_buku,
       namabuku: namabuku,
-      nama_peminjam: nama_peminjam,
-      tanggal_pinjam: tanggal_pinjam,
-      tanggal_kembali: tanggal_kembali,
+      penulis: penulis,
+      penerbit: penerbit,
+      pinjam: pinjam,
     };
     return new Response(
       JSON.stringify({
         message: message,
         status: 200,
-        pinjam: pinjam,
+        buku: buku,
       })
     );
   } catch (error) {

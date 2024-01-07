@@ -1,3 +1,4 @@
+// Purpose: PeminjamanPage component
 "use client"; // This is a custom pragma that tells Vercel to use the client-side version of React
 import React, { useEffect, useState } from "react"; // Import React
 import Header from "../components/Header";  // Import Header component
@@ -41,7 +42,7 @@ const PeminjamanPage = () => {  // Create PeminjamanPage component
       }
 
       //Send POST request to create new peminjaman
-      const postResponse = await fetch("/api/buku", {
+      const postResponse = await fetch("/api/pinjam", {
         method: "POST",
         headers: {
           "Content-Type": "application/json",

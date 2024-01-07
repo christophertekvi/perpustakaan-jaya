@@ -3,6 +3,7 @@ import React, { useState, useEffect } from "react";
 import Image from "next/image";
 import Header from "./components/Header";
 import axios from "axios";
+import { useRouter } from "next/navigation";
 
 interface Pinjam {
   id: string;
@@ -13,7 +14,11 @@ interface Pinjam {
 }
 
 export default function Home() {
+  const router = useRouter(); // Create router variable
   const [pinjam, setPinjam] = useState<Pinjam[]>([]);
+  const [deletedIds, setDeletedIds] = useState(
+    pinjam.length > 0 ? pinjam[0].id : ""
+  );
 
   useEffect(() => {
     const fetchData = async () => {
@@ -28,6 +33,30 @@ export default function Home() {
 
     fetchData();
   }, []);
+
+  const handleDelete = async (id: string) => {
+    try {
+      const response = await fetch("/api/pinjam", {
+        method: "DELETE",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({ id }),
+      });
+
+      const data = await response.json();
+
+      if (response.ok) {
+        // Update the list of deleted IDs
+        alert("Data berhasil dihapus");
+        router.refresh();
+      } else {
+        console.error(data.error);
+      }
+    } catch (error) {
+      console.error("Error deleting record:", error);
+    }
+  };
 
   return (
     <main className="">
@@ -80,6 +109,12 @@ export default function Home() {
                       >
                         Tanggal Kembali
                       </th>
+                      <th
+                        scope="col"
+                        className="relative py-3.5 pl-3 pr-4 sm:pr-6"
+                      >
+                        <span className="sr-only">Edit</span>
+                      </th>
                     </tr>
                   </thead>
                   <tbody className="divide-y divide-gray-200 bg-white">
@@ -99,6 +134,25 @@ export default function Home() {
                         </td>
                         <td className="whitespace-nowrap px-3 py-4 text-sm text-gray-500">
                           {pinjam.tanggal_kembali}
+                        </td>
+                        <td className="whitespace-nowrap px-3 py-4 text-sm text-gray-500">
+                          <button onClick={() => handleDelete(pinjam.id)}>
+                            <svg
+                              color="red"
+                              xmlns="http://www.w3.org/2000/svg"
+                              fill="none"
+                              viewBox="0 0 24 24"
+                              strokeWidth={1.5}
+                              stroke="currentColor"
+                              className="w-6 h-6"
+                            >
+                              <path
+                                strokeLinecap="round"
+                                strokeLinejoin="round"
+                                d="M6 18 18 6M6 6l12 12"
+                              />
+                            </svg>
+                          </button>
                         </td>
                       </tr>
                     ))}
