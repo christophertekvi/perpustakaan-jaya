@@ -1,3 +1,4 @@
+//Header Components
 "use client";
 import { useState } from "react";
 import { Dialog } from "@headlessui/react";
@@ -6,9 +7,7 @@ import Link from "next/link";
 
 const navigation = [
   { name: "Katalog", href: "/katalog" },
-  { name: "Peminjaman", href: "#" },
-  { name: "List Peminjam", href: "#" },
-  { name: "Tambah Peminjam", href: "#" },
+  { name: "Peminjaman", href: "/peminjaman" },
 ];
 
 export default function Example() {
